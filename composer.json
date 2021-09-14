@@ -1,0 +1,36 @@
+{
+    "name": "fgc/dacast-php",
+    "description": "API for dacast V2",
+    "keywords": ["dacast", "API", "REST"],
+    "type": "library",
+    "require": {
+        "php": ">=7.4.0",
+        "guzzlehttp/guzzle": "^7.3",
+        "symfony/serializer": "^5.3",
+        "symfony/options-resolver": "^5.3",
+        "symfony/property-access": "^5.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "friendsofphp/php-cs-fixer": "^3.1",
+        "phpstan/phpstan": "^0.12.98"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "FGC\\DacastPhp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Tyson Green",
+            "email": "tyson@fatguyconsulting.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    }
+}
