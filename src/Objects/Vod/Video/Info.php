@@ -30,8 +30,8 @@ class Info
      * @SerializedName("rotation-metadata-degrees")
     **/
     public int $rotationMetadataDegrees;
-    /** @var int */
-    public int $framerate;
+    /** @var float */
+    public float $framerate;
     /**
      * @var string
      * @SerializedName("video-codec")

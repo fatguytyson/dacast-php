@@ -12,20 +12,20 @@ class Rendition
     **/
     public string $fileLocation;
     /**
-     * @var string
+     * @var string|null
      * @SerializedName("rendition-id")
     **/
-    public string $renditionId;
+    public ?string $renditionId;
     /**
      * @var string
      * @SerializedName("rendition-name")
     **/
     public string $renditionName;
     /**
-     * @var string
+     * @var string|null
      * @SerializedName("transcoding-job-id")
     **/
-    public string $transcodingJobId;
+    public ?string $transcodingJobId;
     /**
      * @var Info
      * @SerializedName("video-info")

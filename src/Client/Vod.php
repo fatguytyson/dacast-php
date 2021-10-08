@@ -24,12 +24,15 @@ class Vod
             '/v2/vod',
             [
                 RequestOptions::QUERY => Search::resolve($options),
+                RequestOptions::HEADERS => [
+                    'X-Format' => 'default',
+                ],
             ],
             Videos::class
         );
     }
 
-    public function fetch(string $id): Video
+    public function fetchDetail(string $id): Video
     {
         return $this->send(
             'get',
@@ -39,12 +42,16 @@ class Vod
         );
     }
 
-    public function fetchAlt(string $id): Videos\Video
+    public function fetch(string $id): Videos\Video
     {
         return $this->send(
             'get',
             sprintf('/v2/vod/%s', $id),
-            [],
+            [
+                RequestOptions::HEADERS => [
+                    'X-Format' => 'default',
+                ],
+            ],
             Videos\Video::class
         );
     }

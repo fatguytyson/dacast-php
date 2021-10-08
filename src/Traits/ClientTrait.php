@@ -33,7 +33,6 @@ trait ClientTrait
             'base_uri' => 'https://developer.dacast.com/',
             RequestOptions::HEADERS => [
                 'X-Api-Key' => $apiKey,
-                'X-Format' => 'default',
             ],
         ]);
         $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
@@ -74,11 +73,9 @@ trait ClientTrait
         if (null === $returnClass) {
             return null;
         }
-        $body = $response->getBody()->getContents();
-        dump($body);
 
         return $this->serializer->deserialize(
-            $body,
+            $response->getBody()->getContents(),
             $returnClass,
             'json'
         );

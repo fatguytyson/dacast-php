@@ -13,8 +13,8 @@ class Video
     public Metadata $metadata;
     /** @var Target[] */
     public array $targets;
-    /** @var string[] */
-    public array $folders;
+    /** @var string[]|null */
+    public ?array $folders;
     /** @var Theme */
     public Theme $theme;
     /**
