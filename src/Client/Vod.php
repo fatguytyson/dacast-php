@@ -11,8 +11,6 @@ use FGC\DacastPhp\OptionResolver\Vod\Search;
 use FGC\DacastPhp\OptionResolver\Vod\Upload;
 use FGC\DacastPhp\Traits\ClientTrait;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Promise\PromiseInterface;
-use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
 
 class Vod
@@ -91,7 +89,6 @@ class Vod
                 'contents'  => $value
             ];
         }
-        dump($file);
         $request = $this->client->requestAsync(
             'post',
             'http://upload.dacast.com',
