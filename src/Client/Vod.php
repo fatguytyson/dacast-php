@@ -89,6 +89,9 @@ class Vod
                 '/v2/vod',
                 [
                     RequestOptions::JSON => $options,
+                    RequestOptions::HEADERS => [
+                        'X-Format' => 'default',
+                    ],
                 ]
             );
         } catch (GuzzleException $e) {
