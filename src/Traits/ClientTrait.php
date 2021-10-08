@@ -74,9 +74,11 @@ trait ClientTrait
         if (null === $returnClass) {
             return null;
         }
+        $body = $response->getBody()->getContents();
+        dump($body);
 
         return $this->serializer->deserialize(
-            $response->getBody()->getContents(),
+            $body,
             $returnClass,
             'json'
         );

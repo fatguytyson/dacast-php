@@ -39,6 +39,16 @@ class Vod
         );
     }
 
+    public function fetchAlt(string $id): Videos\Video
+    {
+        return $this->send(
+            'get',
+            sprintf('/v2/vod/%s', $id),
+            [],
+            Videos\Video::class
+        );
+    }
+
     public function embed(string $id, array $options = [])
     {
         $options = Embed::resolve($options);
