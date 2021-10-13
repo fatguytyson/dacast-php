@@ -98,20 +98,36 @@ class Vod
             throw new RestException($e);
         }
         $token = $this->serializer->decode($tokenResponse->getBody()->getContents(), 'json');
-        $file = [[
-            'name' => 'file',
-            'filename' => $options['source'],
-            'contents' => $handle,
-        ]];
-        foreach ($token as $key => $value) {
-            $file[] = [
-                'name'      => $key,
-                'contents'  => $value
-            ];
+        $file = [];
+        foreach ([
+            'key',
+            'acl',
+            'policy',
+            'x-amz-credential',
+            'x-amz-algorithm',
+            'x-amz-date',
+            'x-amz-signature',
+            'file',
+            'x-amz-meta-uploader',
+            'bucket',
+            'success_action_status',
+                     ] as $key) {
+            if (array_key_exists($key, $token)) {
+                $file[] = [
+                    'name' => $key,
+                    'contents' => $token[$key]
+                ];
+            } elseif ('file' === $key) {
+                $file[] = [
+                    'name' => 'file',
+                    'filename' => $options['source'],
+                    'contents' => $handle,
+                ];
+            }
         }
         $request = $this->client->requestAsync(
             'post',
-            'http://upload.dacast.com',
+            'https://vzaar-upload.s3.amazonaws.com/', // 'http://upload.dacast.com', //
             [
                 RequestOptions::MULTIPART => $file,
                 RequestOptions::HEADERS => null,
