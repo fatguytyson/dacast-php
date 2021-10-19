@@ -3,6 +3,7 @@
 namespace FGC\DacastPhp\Client;
 
 use FGC\DacastPhp\Exception\RestException;
+use FGC\DacastPhp\Objects\Vod\UploadResponse;
 use FGC\DacastPhp\Objects\Vod\Video;
 use FGC\DacastPhp\Objects\Vod\Video\EmbedCode;
 use FGC\DacastPhp\Objects\Vod\Videos;
@@ -74,10 +75,10 @@ class Vod
 
     public function delete(string $id): void
     {
-        $this->send('delete',sprintf('/v2/vod/%s', $id));
+        $this->send('delete', sprintf('/v2/vod/%s', $id));
     }
 
-    public function upload($handle, array $options = [], callable $progress = null, callable $complete = null)
+    public function upload($handle, array $options = [], callable $progress = null, callable $complete = null): UploadResponse
     {
         if (!is_resource($handle)) {
             throw new \InvalidArgumentException('$handle must be a resource to upload.');
@@ -100,34 +101,20 @@ class Vod
         }
         $token = $this->serializer->decode($tokenResponse->getBody()->getContents(), 'json');
         $file = [];
-        foreach ([
-            'acl',
-            'bucket',
-            'key',
-            'policy',
-            'success_action_status',
-            'x-amz-algorithm',
-            'x-amz-credential',
-            'x-amz-date',
-            'x-amz-signature',
-            'file',
-                     ] as $key) {
-            if (array_key_exists($key, $token)) {
-                $file[] = [
-                    'name' => $key,
-                    'contents' => $token[$key]
-                ];
-            } elseif ('file' === $key) {
-                $file[] = [
-                    'name' => 'file',
-                    'filename' => $options['source'],
-                    'contents' => $handle,
-                ];
-            }
+        foreach ($token as $key => $value) {
+            $file[] = [
+                'name' => $key,
+                'contents' => $value,
+            ];
         }
+        $file[] = [
+            'name' => 'file',
+            'filename' => $options['source'],
+            'contents' => $handle,
+        ];
         $request = $this->client->requestAsync(
             'post',
-            'https://upload.dacast.com', //'https://vzaar-upload.s3.amazonaws.com/', //
+            'https://upload.dacast.com',
             [
                 RequestOptions::MULTIPART => $file,
                 RequestOptions::PROGRESS => function ($downloadTotal, $downloadedBytes, $uploadTotal, $uploadedBytes) use ($progress) {
@@ -146,7 +133,12 @@ class Vod
                 return $complete($token);
             });
         }
+        $response = $request->wait();
 
-        return $request->wait();
+        return $this->serializer->deserialize(
+            $response->getBody()->getContents(),
+            UploadResponse::class,
+            'xml'
+        );
     }
 }
