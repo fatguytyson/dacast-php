@@ -90,6 +90,7 @@ class Vod
                 [
                     RequestOptions::JSON => $options,
                     RequestOptions::HEADERS => [
+                        'X-Api-Key' => $this->apiKey,
                         'X-Format' => 'default',
                     ],
                 ]
@@ -100,17 +101,16 @@ class Vod
         $token = $this->serializer->decode($tokenResponse->getBody()->getContents(), 'json');
         $file = [];
         foreach ([
-            'key',
             'acl',
+            'bucket',
+            'key',
             'policy',
-            'x-amz-credential',
+            'success_action_status',
             'x-amz-algorithm',
+            'x-amz-credential',
             'x-amz-date',
             'x-amz-signature',
             'file',
-            'x-amz-meta-uploader',
-            'bucket',
-            'success_action_status',
                      ] as $key) {
             if (array_key_exists($key, $token)) {
                 $file[] = [
@@ -127,10 +127,9 @@ class Vod
         }
         $request = $this->client->requestAsync(
             'post',
-            'https://vzaar-upload.s3.amazonaws.com/', // 'http://upload.dacast.com', //
+            'https://upload.dacast.com', //'https://vzaar-upload.s3.amazonaws.com/', //
             [
                 RequestOptions::MULTIPART => $file,
-                RequestOptions::HEADERS => null,
                 RequestOptions::PROGRESS => function ($downloadTotal, $downloadedBytes, $uploadTotal, $uploadedBytes) use ($progress) {
                     if (null !== $progress && $uploadTotal > 0 && $uploadedBytes > 0) {
                         $progress([

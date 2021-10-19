@@ -31,9 +31,6 @@ trait ClientTrait
         $this->apiKey = $apiKey;
         $this->client = $client ?? new Client([
             'base_uri' => 'https://developer.dacast.com/',
-            RequestOptions::HEADERS => [
-                'X-Api-Key' => $apiKey,
-            ],
         ]);
         $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
         $this->serializer = $serializer ?? new Serializer([
@@ -65,6 +62,10 @@ trait ClientTrait
         if (isset($options[RequestOptions::QUERY]) && is_object($options[RequestOptions::QUERY])) {
             $options[RequestOptions::QUERY] = $this->serializer->normalize($options[RequestOptions::QUERY], 'json');
         }
+        if (!isset($options[RequestOptions::HEADERS])) {
+            $options[RequestOptions::HEADERS] = [];
+        }
+        $options[RequestOptions::HEADERS]['X-Api-Key'] = $this->apiKey;
         try {
             $response = $this->client->request($method, $url, $options);
         } catch (GuzzleException $e) {
