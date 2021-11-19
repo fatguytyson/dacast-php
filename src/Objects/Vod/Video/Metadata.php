@@ -26,8 +26,8 @@ class Metadata
     public bool $startMuted;
     /** @var bool */
     public bool $loop;
-    /** @var string */
-    public string $description;
+    /** @var string|null */
+    public ?string $description;
     /**
      * @var string|null
      * @SerializedName("geo-restriction-id")
@@ -129,10 +129,10 @@ class Metadata
     **/
     public int $creationDate;
     /**
-     * @var bool
+     * @var bool|null
      * @SerializedName("paywall-enabled")
     **/
-    public bool $paywallEnabled;
+    public ?bool $paywallEnabled;
     /**
      * @var string|null
      * @SerializedName("countdown-timezone")

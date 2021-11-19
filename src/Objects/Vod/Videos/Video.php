@@ -7,24 +7,24 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class Video
 {
-    /** @var int **/
-    public int $abitrate;
-    /** @var string **/
-    public string $acodec;
+    /** @var int|null **/
+    public ?int $abitrate = null;
+    /** @var string|null **/
+    public ?string $acodec = null;
     /** @var array|null **/
-    public ?array $ads;
+    public ?array $ads = null;
     /**
-     * @var string
+     * @var string|null
      * @SerializedName("associated_packages")
     **/
-    public string $associatedPackages;
-    /** @var bool **/
-    public bool $autoplay;
+    public ?string $associatedPackages = null;
+    /** @var bool|null **/
+    public ?bool $autoplay = null;
     /**
-     * @var int
+     * @var int|null
      * @SerializedName("category_id")
     **/
-    public int $categoryId;
+    public ?int $categoryId = null;
     /** @var string **/
     public string $container;
     /**
