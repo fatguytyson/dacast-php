@@ -7,28 +7,28 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 class Rendition
 {
     /**
-     * @var string
+     * @var string|null
      * @SerializedName("file-location")
     **/
-    public string $fileLocation;
+    public ?string $fileLocation;
     /**
      * @var string|null
      * @SerializedName("rendition-id")
     **/
     public ?string $renditionId;
     /**
-     * @var string
+     * @var string|null
      * @SerializedName("rendition-name")
     **/
-    public string $renditionName;
+    public ?string $renditionName;
     /**
      * @var string|null
      * @SerializedName("transcoding-job-id")
     **/
     public ?string $transcodingJobId;
     /**
-     * @var Info
+     * @var Info|null
      * @SerializedName("video-info")
     **/
-    public Info $videoInfo;
+    public ?Info $videoInfo;
 }
